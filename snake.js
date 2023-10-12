@@ -3,12 +3,14 @@ let res = 20;
 let food;
 let w;
 let h;
+let gameOver = false;
 
 function setup() {
   createCanvas(400, 400);
   w = floor(width / res);
   h = floor(height / res);
   frameRate(5);
+  textAlign(CENTER, CENTER);
   snake = new Snake();
   spawnFood();
 }
@@ -32,6 +34,14 @@ function keyPressed() {
 }
 
 function draw() {
+  if (gameOver) {
+    if (keyIsPressed) {
+      gameOver = false;
+      snake = new Snake();
+      spawnFood();
+    }
+  }
+
   scale(res);
   background(220);
   if (snake.eats(food)) {
@@ -44,7 +54,12 @@ function draw() {
   if (snake.endGame()) {
     print("END GAME");
     background(255, 0, 0);
-    noLoop();
+    gameOver = true;
+    fill(0);
+    textSize(2);
+    text("Game Over", w / 2, h / 2);
+    textSize(0.7);
+    text("Press any key to restart", w / 2, h / 2 + 2);
   }
 
   noStroke();
