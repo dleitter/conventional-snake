@@ -20,13 +20,13 @@ function spawnFood() {
 }
 
 function keyPressed() {
-  if (keyCode === LEFT_ARROW) {
+  if (keyCode === LEFT_ARROW && !snake.runsIntoNeck(-1, 0)) {
     snake.setDir(-1, 0);
-  } else if (keyCode === RIGHT_ARROW) {
+  } else if (keyCode === RIGHT_ARROW && !snake.runsIntoNeck(1, 0)) {
     snake.setDir(1, 0);
-  } else if (keyCode === DOWN_ARROW) {
+  } else if (keyCode === DOWN_ARROW && !snake.runsIntoNeck(0, 1)) {
     snake.setDir(0, 1);
-  } else if (keyCode === UP_ARROW) {
+  } else if (keyCode === UP_ARROW && !snake.runsIntoNeck(0, -1)) {
     snake.setDir(0, -1);
   }
 }
@@ -62,6 +62,15 @@ class Snake {
     this.setDir = function (x, y) {
       this.xdir = x;
       this.ydir = y;
+    };
+
+    this.runsIntoNeck = function (x, y) {
+      if (this.body.length < 2) {
+        return false;
+      }
+      let head = this.body[this.body.length - 1].copy();
+      let neck = this.body[this.body.length - 2].copy();
+      return head.x + x === neck.x && head.y + y === neck.y;
     };
 
     this.update = function () {
