@@ -36,6 +36,7 @@ function draw() {
   background(220);
   if (snake.eats(food)) {
     snake.grow();
+    spawnFood();
   }
   snake.update();
   snake.show();
